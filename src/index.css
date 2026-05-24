@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Warm yellowish nuances for backgrounds, cards and fields in light mode */
+  --color-custom-white: #FFFFFA; /* pristine yellowish vanilla ivory */
+  --color-custom-gray-50: #FFFDF1; /* warm buttery highlight */
+  --color-custom-gray-100: #FFF9CC; /* creamy light yellow */
+  --color-custom-gray-150: #FDEDA0; /* soft sunflower yellow for borders & accents */
+  --color-custom-gray-200: #FCE17E; /* rich accent pastel yellow */
+  --color-custom-gray-300: #ECCC59; /* deep golden honey yellow */
+  
+  /* Absolute black text overrides in light mode for ultra contrast accessibility */
+  --color-custom-gray-400: #292929; /* dark charcoal for helpers */
+  --color-custom-gray-450: #1B1B1B;
+  --color-custom-gray-500: #0D0D0D; /* extremely dark black */
+  --color-custom-gray-600: #000000; /* absolute black */
+  --color-custom-gray-700: #000000; /* absolute black */
+  --color-custom-gray-800: #000000; /* absolute black */
+  --color-custom-gray-900: #000000; /* absolute black */
+  --color-custom-gray-950: #000000; /* absolute black */
+  
+  --color-custom-gray-850: #FDEDA0;
+  --color-custom-gray-855: #FFF9CC;
+  --color-custom-zinc-855: #FFF9CC;
+  
+  --color-custom-slate-50: #FFFFF2;
+  --color-custom-slate-100: #FFF8C7;
+  --color-custom-slate-200: #FCECA1;
+}
+
+.dark {
+  /* Restore sleek cool charcoal midnight defaults for dark mode */
+  --color-custom-white: #ffffff;
+  --color-custom-gray-50: #f9fafb;
+  --color-custom-gray-100: #f3f4f6;
+  --color-custom-gray-150: #e5e7eb;
+  --color-custom-gray-200: #e5e7eb;
+  --color-custom-gray-300: #d1d5db;
+  --color-custom-gray-400: #9ca3af;
+  --color-custom-gray-450: #a1a1aa;
+  --color-custom-gray-500: #6b7280;
+  --color-custom-gray-600: #4b5563;
+  --color-custom-gray-700: #374151;
+  --color-custom-gray-800: #1f2937;
+  --color-custom-gray-900: #111827;
+  --color-custom-gray-950: #030712;
+  
+  --color-custom-gray-850: #1e293b;
+  --color-custom-gray-855: #111827;
+  --color-custom-zinc-855: #111827;
+
+  --color-custom-slate-50: #f8fafc;
+  --color-custom-slate-100: #f1f5f9;
+  --color-custom-slate-200: #e2e8f0;
+}
+
+@theme {
+  --color-white: var(--color-custom-white);
+  --color-gray-50: var(--color-custom-gray-50);
+  --color-gray-100: var(--color-custom-gray-100);
+  --color-gray-150: var(--color-custom-gray-150);
+  --color-gray-200: var(--color-custom-gray-200);
+  --color-gray-300: var(--color-custom-gray-300);
+  --color-gray-400: var(--color-custom-gray-400);
+  --color-gray-450: var(--color-custom-gray-450);
+  --color-gray-500: var(--color-custom-gray-500);
+  --color-gray-600: var(--color-custom-gray-600);
+  --color-gray-700: var(--color-custom-gray-700);
+  --color-gray-800: var(--color-custom-gray-800);
+  --color-gray-900: var(--color-custom-gray-900);
+  --color-gray-950: var(--color-custom-gray-950);
+  
+  --color-gray-850: var(--color-custom-gray-850);
+  --color-gray-855: var(--color-custom-gray-855);
+  --color-zinc-855: var(--color-custom-zinc-855);
+  
+  --color-slate-50: var(--color-custom-slate-50);
+  --color-slate-100: var(--color-custom-slate-100);
+  --color-slate-200: var(--color-custom-slate-200);
+
+  --color-cit-blue-50: #f0f5fc;
+  --color-cit-blue-100: #dce7f5;
+  --color-cit-blue-200: #c0d5ee;
+  --color-cit-blue-300: #93bce0;
+  --color-cit-blue-400: #5f9acf;
+  --color-cit-blue-500: #004B8D; /* Sleek CIT Corporate Royal Blue */
+  --color-cit-blue-600: #003A6D; /* Deep Sleek Blue Hover */
+  --color-cit-blue-700: #002D56;
+  --color-cit-blue-800: #001f3d;
+  --color-cit-blue-900: #001224;
+  
+  --color-cit-red-50: #fef2f3;
+  --color-cit-red-100: #fde2e4;
+  --color-cit-red-500: #E31E24; /* Vibrant Sleek Canadian Red Accent */
+  --color-cit-red-600: #be1218;
+  --color-cit-red-700: #990a0f;
+  --color-cit-red-800: #740407;
+  --color-cit-red-900: #4a0002;
+
+  --color-cit-dark-50: #f9fafb;
+  --color-cit-dark-100: #f3f4f6;
+  --color-cit-dark-200: #e5e7eb;
+  --color-cit-dark-300: #d1d5db;
+  --color-cit-dark-400: #9ca3af;
+  --color-cit-dark-500: #0f172a; /* Sleek charcoal blue-slate */
+  --color-cit-dark-600: #0b0f19; /* Sleek midnight deep backdrop */
+  --color-cit-dark-700: #05070c;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "Fira Code", monospace;
+}
+
+/* Custom styles for high-fidelity animations and shadows */
+@layer base {
+  body {
+    @apply font-sans text-gray-950 dark:text-gray-100 antialiased selection:bg-cit-blue-100 selection:text-cit-blue-900 transition-colors duration-200;
+  }
+  input, textarea, select {
+    @apply text-gray-950 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 44, 84, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 44, 84, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Background patterns */
+.cit-pattern-light {
+  background-color: #FEFAF0;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(253, 224, 71, 0.22) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, rgba(0, 75, 141, 0.04) 0px, transparent 50%);
+}
+
+.cit-pattern-dark {
+  background-color: #0b0f19;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(0, 75, 141, 0.16) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(227, 30, 36, 0.12) 0px, transparent 50%);
+}

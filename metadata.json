@@ -1,0 +1,6 @@
+{
+  "name": "CitConnect",
+  "description": "Social networking platform for Canadian Institute of Technology (CIT) students to share projects, ideas, and connect with peers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
