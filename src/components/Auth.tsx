@@ -427,9 +427,13 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
           
           <div className="relative z-10 flex flex-col items-center">
             {/* CIT Logo Circle Representation */}
-            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg mb-3">
-              <span className="text-cit-blue-500 font-display font-extrabold text-xl tracking-tight">CIT</span>
-              <div className="w-2 h-2 rounded-full bg-cit-red-500 ml-0.5 animate-pulse"></div>
+            <div className="w-16 h-16 rounded-full bg-white overflow-hidden flex items-center justify-center shadow-lg mb-3 border border-gray-100">
+              <img 
+                src="https://lh3.googleusercontent.com/a/ACg8ocIT7NbQDdciW747F9oxMVVKtsB_SwzWIx6y4nj6U0cbzWrazqglYQ=s100-c" 
+                alt="CIT Logo" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
             </div>
             
             <h1 className="font-display text-2xl font-bold tracking-tight">CitConnect</h1>

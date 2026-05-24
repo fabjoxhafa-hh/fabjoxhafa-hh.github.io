@@ -551,8 +551,13 @@ export default function App() {
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           
-          <div className="w-9 h-9 rounded-full bg-cit-blue-500 flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition" onClick={() => { setActiveTab('Home'); setMobileMenuOpen(false); }}>
-            <span className="text-white font-display font-extrabold text-xs tracking-tight">CIT</span>
+          <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition bg-white border border-gray-100" onClick={() => { setActiveTab('Home'); setMobileMenuOpen(false); }}>
+            <img 
+              src="https://lh3.googleusercontent.com/a/ACg8ocIT7NbQDdciW747F9oxMVVKtsB_SwzWIx6y4nj6U0cbzWrazqglYQ=s100-c" 
+              alt="CIT Logo" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
           
           <span 
