@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 // OTP Store Map: email -> { code, expiresAt }
 const otpStore = new Map<string, { code: string; expiresAt: number }>();
@@ -65,12 +65,15 @@ async function startServer() {
       if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
         senderEmail = process.env.GMAIL_USER;
         transporter = nodemailer.createTransport({
-          service: "gmail",
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true,
           auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
           },
-        });
+          family: 4 // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+        } as any);
         isConfigured = true;
       } else if (
         process.env.SMTP_HOST &&
@@ -87,7 +90,8 @@ async function startServer() {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,
           },
-        });
+          family: 4 // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+        } as any);
         isConfigured = true;
       }
 
