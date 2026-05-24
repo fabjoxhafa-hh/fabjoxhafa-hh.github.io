@@ -3,6 +3,10 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import dns from "dns";
+
+// Force IPv4 DNS resolution order first to bypass Render.com IPv6 outbound connection issues (ENETUNREACH)
+dns.setDefaultResultOrder("ipv4first");
 
 dotenv.config();
 
