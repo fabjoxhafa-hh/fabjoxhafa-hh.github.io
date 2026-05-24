@@ -75,6 +75,10 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
   const [forgotNewPassword, setForgotNewPassword] = useState('');
   const [forgotConfirmNewPassword, setForgotConfirmNewPassword] = useState('');
   const [etherealPreviewUrl, setEtherealPreviewUrl] = useState('');
+  const [sandboxOTP, setSandboxOTP] = useState('');
+  const [isSandboxMode, setIsSandboxMode] = useState(false);
+  const [clientLockoutUntil, setClientLockoutUntil] = useState<number>(0);
+  const [clientAttempts, setClientAttempts] = useState<number>(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -228,12 +232,20 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
       return;
     }
 
+    const now = Date.now();
+    if (clientLockoutUntil > now) {
+      const waitMins = Math.ceil((clientLockoutUntil - now) / 60000);
+      setError(`Too many failed attempts. The password reset flow for this email has been temporarily locked. Please try again in ${waitMins} minute(s).`);
+      return;
+    }
+
     setLoading(true);
 
-    try {
-      const usersList = getUsers();
-      const registeredEmails = usersList.map(u => u.email.toLowerCase().trim());
+    const usersList = getUsers();
+    const normalizedEmail = forgotEmail.toLowerCase().trim();
+    const registeredEmails = usersList.map(u => u.email.toLowerCase().trim());
 
+    try {
       const response = await fetch('/api/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -251,12 +263,33 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
         return;
       }
 
-      setSuccess('A verification code has been successfully dispatched to your registered email address.');
+      if (data.isDemoMode) {
+        setSandboxOTP(data.otp);
+        setIsSandboxMode(true);
+        setSuccess(`[Dev Mode] ${data.message}`);
+      } else {
+        setIsSandboxMode(false);
+        setSandboxOTP('');
+        setSuccess('A verification code has been successfully dispatched to your registered email address.');
+      }
       setForgotStep('verify');
     } catch (err) {
       setLoading(false);
-      console.error(err);
-      setError('Communication failed: server offline or network socket error.');
+      console.warn('API connection offline; falling back to dynamic static integration for GitHub Pages.', err);
+      
+      // Strict rule check: show error if the uncreated account tries to reset password
+      const existsLocally = registeredEmails.some(email => email === normalizedEmail);
+      if (!existsLocally) {
+        setError('This email address is not registered on CitConnect. Please register first or verify that you typed it correctly.');
+        return;
+      }
+
+      // Generate a dynamic local client OTP for static/demo modes
+      const clientOTP = Math.floor(100000 + Math.random() * 900000).toString();
+      setSandboxOTP(clientOTP);
+      setIsSandboxMode(true);
+      setSuccess(`[GitHub Pages Demo] A simulated verification code has been dispatched. Use code ${clientOTP} to verify ownership.`);
+      setForgotStep('verify');
     }
   };
 
@@ -271,7 +304,37 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
       return;
     }
 
+    const now = Date.now();
+    if (clientLockoutUntil > now) {
+      const waitMins = Math.ceil((clientLockoutUntil - now) / 60000);
+      setError(`Too many failed attempts. The password reset flow for this email has been temporarily locked. Please try again in ${waitMins} minute(s).`);
+      return;
+    }
+
     setLoading(true);
+
+    if (isSandboxMode) {
+      // Local client-side simulation verification
+      setTimeout(() => {
+        setLoading(false);
+        if (forgotCode.trim() === sandboxOTP) {
+          setSuccess('Identity fully verified! Now configure a strong new password.');
+          setForgotStep('reset');
+          setClientAttempts(0);
+        } else {
+          const nextAttempts = clientAttempts + 1;
+          if (nextAttempts >= 5) {
+            setClientLockoutUntil(Date.now() + 5 * 60 * 1000);
+            setClientAttempts(0);
+            setError('Too many failed attempts. The password reset flow for this email has been temporarily locked. Please try again in 5 minutes.');
+          } else {
+            setClientAttempts(nextAttempts);
+            setError(`Incorrect security verification code. You have ${5 - nextAttempts} attempt(s) remaining.`);
+          }
+        }
+      }, 500);
+      return;
+    }
 
     try {
       const response = await fetch('/api/verify-otp', {
@@ -292,7 +355,7 @@ export default function Auth({ onLoginSuccess, onAdminLoginSuccess, darkMode }: 
       setForgotStep('reset');
     } catch (err) {
       setLoading(false);
-      console.error(err);
+      console.warn('API error; falling back to client fallback validation.', err);
       setError('Error communicating with verification endpoint.');
     }
   };
