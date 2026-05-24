@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="(https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Logo_of_the_Canadian_Institute_of_Technology.svg/250px-Logo_of_the_Canadian_Institute_of_Technology.svg.png)" />
+<img width="1200" height="475" alt="GHBanner" src="[(https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Logo_of_the_Canadian_Institute_of_Technology.svg/250px-Logo_of_the_Canadian_Institute_of_Technology.svg.png)](https://cit.edu.al/wp-content/uploads/2022/08/CIT-Logo-white.webp)" />
 </div>
 
 
