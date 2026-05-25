@@ -76,7 +76,14 @@ async function startServer() {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
           },
-          family: 4 // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+          family: 4, // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+          lookup: (hostname: string, options: any, callback: any) => {
+            if (typeof options === "function") {
+              dns.lookup(hostname, { family: 4 }, options);
+            } else {
+              dns.lookup(hostname, { ...options, family: 4 }, callback);
+            }
+          }
         } as any);
         isConfigured = true;
       } else if (
@@ -94,7 +101,14 @@ async function startServer() {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,
           },
-          family: 4 // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+          family: 4, // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
+          lookup: (hostname: string, options: any, callback: any) => {
+            if (typeof options === "function") {
+              dns.lookup(hostname, { family: 4 }, options);
+            } else {
+              dns.lookup(hostname, { ...options, family: 4 }, callback);
+            }
+          }
         } as any);
         isConfigured = true;
       }
