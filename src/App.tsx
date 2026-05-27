@@ -533,8 +533,55 @@ export default function App() {
   // Main UI components render
   const profileToView = activeProfileUserId ? users.find(u => u.id === activeProfileUserId) : null;
 
+  const renderFooter = (isMobile: boolean) => {
+    return (
+      <footer className={isMobile
+        ? `w-full mt-8 px-4 py-4 border-t text-center text-[10px] text-gray-400 select-none ${
+            darkMode ? 'bg-cit-dark-700/35 border-gray-800' : 'bg-gray-50/50 border-gray-150'
+          }`
+        : `w-full py-3 px-6 border-t text-center text-[10px] text-gray-400 select-none ${
+            darkMode ? 'bg-cit-dark-500 border-gray-800' : 'bg-white border-gray-150'
+          }`
+      }>
+        <div className="w-full flex flex-col md:flex-row justify-between items-center gap-3">
+          <div className="flex gap-2.5 sm:gap-4 font-semibold justify-center">
+            <button 
+              onClick={() => { 
+                setActiveTab('Terms'); 
+                setActiveDetailPostId(null); 
+                setActiveProfileUserId(null); 
+                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+              }} 
+              className="hover:underline cursor-pointer"
+            >
+              Terms of Use
+            </button>
+            <button 
+              onClick={() => { 
+                setActiveTab('Privacy'); 
+                setActiveDetailPostId(null); 
+                setActiveProfileUserId(null); 
+                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+              }} 
+              className="hover:underline cursor-pointer"
+            >
+              Student Privacy Policy
+            </button>
+            <a href="https://cit.edu.al/contacts/" target="_blank" rel="noreferrer" className="hover:underline">CIT Contacts</a>
+          </div>
+          <div>
+            <span>© {new Date().getFullYear()} CitConnect — Canadian Institute of Technology. All Rights Reserved.</span>
+            <p className="mt-1 text-gray-500 font-mono text-[9px]">
+              Created in collaboration for CIT from Fabjo Xhafa and Gentian Muzhaqi
+            </p>
+          </div>
+        </div>
+      </footer>
+    );
+  };
+
   return (
-    <div className={`min-h-screen flex flex-col ${darkMode ? 'cit-pattern-dark text-gray-100' : 'cit-pattern-light text-gray-800'} transition-colors duration-200`}>
+    <div className={`h-screen overflow-hidden flex flex-col ${darkMode ? 'cit-pattern-dark text-gray-100' : 'cit-pattern-light text-gray-800'} transition-colors duration-200`}>
       
       {/* 1. HEADER (UNIVERSALLY POLISHED HEADER) */}
       <header className={`sticky top-0 z-40 px-4 md:px-6 h-16 border-b flex items-center justify-between backdrop-blur-md ${
@@ -738,7 +785,7 @@ export default function App() {
       </header>
 
       {/* 2. BODY GENERAL CONTAINER WORKSPACE */}
-      <div className="flex-1 w-full flex">
+      <div className="flex-1 w-full flex min-h-0 overflow-hidden">
         
         {/* A. LEFT SIDE NAVBAR (DESKTOP NAVIGATION BLOCK - FIXED) */}
         <aside className="w-64 shrink-0 border-r border-gray-150 dark:border-gray-800 p-4 space-y-6 hidden md:flex flex-col justify-between">
@@ -803,7 +850,7 @@ export default function App() {
         </aside>
 
         {/* B. MAIN DYNAMIC WORKSPACE COMPONENT (CENTER SCROLLABLE VIEW) */}
-        <main className="flex-1 p-4 md:p-6 space-y-6 overflow-y-auto min-h-screen scrollbar bg-white/20 dark:bg-cit-dark-600/10">
+        <main className="flex-1 p-4 md:p-6 space-y-6 overflow-y-auto scrollbar bg-white/20 dark:bg-cit-dark-600/10">
           
           <AnimatePresence mode="wait">
             <motion.div
@@ -1793,10 +1840,15 @@ export default function App() {
             </motion.div>
           </AnimatePresence>
 
+          {/* Mobile Footer - Sit only at the end of the tabs */}
+          <div className="md:hidden">
+            {renderFooter(true)}
+          </div>
+
         </main>
 
         {/* C. RIGHT SIDEBAR (DESKTOP USER SUGGESTIONS PANEL - FIXED WHILE SCROLLING) */}
-        <aside className="w-80 shrink-0 border-l border-gray-150 dark:border-gray-800 p-4 space-y-6 hidden lg:block h-[calc(100vh-64px)] sticky top-16 overflow-y-auto scrollbar select-none">
+        <aside className="w-80 shrink-0 border-l border-gray-150 dark:border-gray-800 p-4 space-y-6 hidden lg:block h-full overflow-y-auto scrollbar select-none">
           
           {/* Suggestions block */}
           <div className="space-y-4">
@@ -1885,47 +1937,9 @@ export default function App() {
       </div>
 
       {/* 3. FOOTER (CAMPUS CREDITS, LAWS & TERMS) */}
-      <footer className={`mt-auto px-6 py-5 border-t text-center text-[10px] text-gray-400 ${
-        darkMode ? 'bg-cit-dark-700 border-gray-850' : 'bg-gray-50 border-gray-150'
-      }`}>
-        <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3">
-          <div className="flex gap-4 font-semibold">
-            <a 
-              href="#" 
-              onClick={(e) => { 
-                e.preventDefault(); 
-                setActiveTab('Terms'); 
-                setActiveDetailPostId(null); 
-                setActiveProfileUserId(null); 
-                window.scrollTo({ top: 0, behavior: 'smooth' }); 
-              }} 
-              className="hover:underline cursor-pointer"
-            >
-              Terms of Use
-            </a>
-            <a 
-              href="#" 
-              onClick={(e) => { 
-                e.preventDefault(); 
-                setActiveTab('Privacy'); 
-                setActiveDetailPostId(null); 
-                setActiveProfileUserId(null); 
-                window.scrollTo({ top: 0, behavior: 'smooth' }); 
-              }} 
-              className="hover:underline cursor-pointer"
-            >
-              Student Privacy Policy
-            </a>
-            <a href="https://cit.edu.al/contacts/" target="_blank" rel="noreferrer" className="hover:underline">CIT Contacts</a>
-          </div>
-          <div>
-            <span>© {new Date().getFullYear()} CitConnect — Canadian Institute of Technology. All Rights Reserved.</span>
-            <p className="mt-1 text-gray-500 font-mono text-[9px]">
-              Crafted in collaboration for CIT from Fabjo Xhafa and Gentjan Muzhaqi
-            </p>
-          </div>
-        </div>
-      </footer>
+      <div className="hidden md:block shrink-0">
+        {renderFooter(false)}
+      </div>
 
       {/* 4. BOTTOM NAVIGATION BAR (MOBILE USERS ONLY) */}
       <nav className={`fixed bottom-0 left-0 right-0 h-14 border-t z-40 md:hidden flex items-center justify-around ${

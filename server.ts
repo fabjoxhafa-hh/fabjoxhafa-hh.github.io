@@ -3,10 +3,6 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import dns from "dns";
-
-// Force IPv4 DNS resolution order first to bypass Render.com IPv6 outbound connection issues (ENETUNREACH)
-dns.setDefaultResultOrder("ipv4first");
 
 dotenv.config();
 
@@ -69,22 +65,12 @@ async function startServer() {
       if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
         senderEmail = process.env.GMAIL_USER;
         transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
+          service: "gmail",
           auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
           },
-          family: 4, // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
-          lookup: (hostname: string, options: any, callback: any) => {
-            if (typeof options === "function") {
-              dns.lookup(hostname, { family: 4 }, options);
-            } else {
-              dns.lookup(hostname, { ...options, family: 4 }, callback);
-            }
-          }
-        } as any);
+        });
         isConfigured = true;
       } else if (
         process.env.SMTP_HOST &&
@@ -101,15 +87,7 @@ async function startServer() {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,
           },
-          family: 4, // Force IPv4 to bypass Render.com's IPv6 outbound connection issues
-          lookup: (hostname: string, options: any, callback: any) => {
-            if (typeof options === "function") {
-              dns.lookup(hostname, { family: 4 }, options);
-            } else {
-              dns.lookup(hostname, { ...options, family: 4 }, callback);
-            }
-          }
-        } as any);
+        });
         isConfigured = true;
       }
 
